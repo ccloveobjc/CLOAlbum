@@ -1,14 +1,14 @@
 
 Pod::Spec.new do |s|
 
-  s.name         = "CLSAlbum"
+  s.name         = "CLOAlbum"
   s.version      = "0.0.1"
-  s.summary      = "A short description of CLSAlbum."
+  s.summary      = "A short description of CLOAlbum."
   s.description  = <<-DESC
                     Cc
                    DESC
 
-  s.homepage     = "https://github.com/ccloveswift/CLSAlbum"
+  s.homepage     = "https://github.com/ccloveobjc/CLOAlbum"
   
   s.license      = { :type => 'Copyright', :text =>
         <<-LICENSE
@@ -18,16 +18,16 @@ Pod::Spec.new do |s|
   
   s.author             = { "TT" => "654974034@qq.com" }
   
-  s.source       = { :git => "https://github.com/ccloveswift/CLSAlbum.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/ccloveobjc/CLOAlbum.git", :tag => "#{s.version}" }
 
   s.requires_arc = true
 
   s.default_subspec     = 'Core'
 
   s.subspec 'Core' do |ss|
-    ss.dependency       'CLSCommon/Core'
+    # ss.dependency       'CLSCommon/Core'
     ss.frameworks          = "Photos"
-    ss.source_files        = "Classes/Core/**/*.{swift}"
+    ss.source_files        = "Classes/Core/**/*.{h,m,mm}"
   end
 
 
