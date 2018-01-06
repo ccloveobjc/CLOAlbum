@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |ss|
     # ss.dependency       'CLSCommon/Core'
     ss.frameworks          = "Photos"
-    ss.source_files        = "Classes/Core/**/*.{h,m,mm}"
+    ss.source_files        = "Classes/Core/**/*.{h,m,mm,hpp,cpp,c}"
   end
 
 
