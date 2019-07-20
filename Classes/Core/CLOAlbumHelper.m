@@ -5,12 +5,12 @@
 //  Created by Cc on 2018/1/6.
 //
 
-#import "CLOAlbumMgr.h"
+#import "CLOAlbumHelper.h"
 
 NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChanged";
 //NSString *const kNotification_AllSectionsChanged = @"kNotification_AllSectionsChanged";
 
-@interface CLOAlbumMgr()
+@interface CLOAlbumHelper()
 <
     PHPhotoLibraryChangeObserver
 >
@@ -24,19 +24,7 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 
 @end
 
-@implementation CLOAlbumMgr
-
-+ (instancetype)sInstance
-{
-    static id _instance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        _instance = [[self alloc] init];
-    });
-    
-    return _instance;
-}
+@implementation CLOAlbumHelper
 
 - (instancetype)init
 {
@@ -196,14 +184,35 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
     return arrCollections;
 }
 
+
+- (PHAssetCollection *)fGetCameraRollCollection
+{
+    PHAssetCollection *result = nil;
+    for (PHAssetCollection *pc in [self fGetAllCollections]) {
+        
+        if ([pc.localizedTitle isEqualToString:@"Camera Roll"]) {
+            
+            result = pc;
+            break;
+        }
+    }
+    
+    return result;
+}
+
+
 /** 获取当前相册第一张图片 */
-- (PHFetchResult<PHAsset *> *)fGetPHAssetsFromCollection:(PHAssetCollection *)collection
+- (PHFetchResult<PHAsset *> *)fGetPHAssetsFromCollection:(PHAssetCollection *)collection fetchLimit:(NSUInteger)limit
 {
     PHFetchOptions *opt = [[PHFetchOptions alloc] init];
-    opt.sortDescriptors = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
+    opt.sortDescriptors = @[
+                            [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO]
+                            ];
     
     opt.predicate = [NSPredicate predicateWithFormat:@"mediaType = %@", @(PHAssetMediaTypeImage)];
-    PHFetchResult<PHAsset *> *asset = [PHAsset fetchKeyAssetsInAssetCollection:collection options:opt];
+    opt.fetchLimit = limit;
+    PHFetchResult<PHAsset *> *asset = [PHAsset fetchAssetsInAssetCollection:collection options:opt];
+    
     return asset;
 }
 

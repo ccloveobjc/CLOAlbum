@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 
-#define kCLOAlbumMgr [CLOAlbumMgr sInstance]
+//#define kCLOAlbumMgr [CLOAlbumMgr sInstance]
 
 /**
  *  当mAllPhotos 有改变时通知
@@ -16,7 +16,7 @@
 extern NSString *const kNotification_AllPhotosChanged;
 //extern NSString *const kNotification_AllSectionsChanged;
 
-@interface CLOAlbumMgr : NSObject
+@interface CLOAlbumHelper : NSObject
 
     /**
      相册名字
@@ -35,7 +35,7 @@ extern NSString *const kNotification_AllPhotosChanged;
     @property (nonatomic,strong,readonly) PHAssetCollection *mCurrentAssetCollection;
 
 
-    + (instancetype)sInstance;
+//    + (instancetype)sInstance;
 
 
 /**
@@ -92,13 +92,20 @@ extern NSString *const kNotification_AllPhotosChanged;
  */
 - (NSArray<PHAssetCollection *> *)fGetSystemsAndUserCollections;
 
+
+/**
+ 获取用户Camera Roll 相册
+ */
+- (PHAssetCollection *)fGetCameraRollCollection;
+
+
 /**
  获取当前相册第一张图片
-
  @param collection 相册
+ @param limit       最大个数，如果=0表示全部查出
  @return 图片
  */
-- (PHFetchResult<PHAsset *> *)fGetPHAssetsFromCollection:(PHAssetCollection *)collection;
+- (PHFetchResult<PHAsset *> *)fGetPHAssetsFromCollection:(PHAssetCollection *)collection fetchLimit:(NSUInteger)limit;
 
 
 /**
