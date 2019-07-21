@@ -143,6 +143,22 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
     }];
 }
 
+
+- (PHImageRequestID)fGetOriginImageData:(PHAsset *)asset withResultHandler:(void(^)(NSData *imageData, NSDictionary * info))resultHandler
+{
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.networkAccessAllowed = YES;
+    options.synchronous = YES;
+    
+    return [self.mPHCachingImageMgr requestImageDataForAsset:asset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+        
+        if (resultHandler) {
+            
+            resultHandler(imageData, info);
+        }
+    }];
+}
+
 /** 获取所有相册信息 */
 - (PHFetchResult<PHAssetCollection *> *)fGetAllCollections
 {
