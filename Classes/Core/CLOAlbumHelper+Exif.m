@@ -15,6 +15,11 @@
     
         [self fGetOriginImageData:asset withResultHandler:^(NSData *imageData, NSDictionary *exif) {
             
+            if (imageData == nil)
+            {
+                imageInfoHander(imageData, nil, nil);
+                return;
+            }
             CGImageSourceRef imgSource = CGImageSourceCreateWithData((CFDataRef)imageData, nil);
             CFDictionaryRef imageInfo = CGImageSourceCopyPropertiesAtIndex(imgSource, 0, NULL);
             
@@ -23,6 +28,9 @@
             NSDictionary *gpsInfo = (__bridge NSDictionary *)CFDictionaryGetValue(imageInfo, kCGImagePropertyGPSDictionary);
             
             imageInfoHander(imageData, exifInfo, gpsInfo);
+            
+            CFRelease(imageInfo);
+            CFRelease(imgSource);
         }];
     }
 }
