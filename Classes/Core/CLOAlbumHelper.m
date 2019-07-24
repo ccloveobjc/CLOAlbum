@@ -79,23 +79,14 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
         
         PHImageRequestOptions *opt = [[PHImageRequestOptions alloc] init];
         opt.resizeMode = PHImageRequestOptionsResizeModeFast;
-        opt.synchronous = YES;
-        opt.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
+        opt.synchronous = NO;
+//        opt.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
+        opt.deliveryMode = PHImageRequestOptionsDeliveryModeOpportunistic;
         opt.networkAccessAllowed = NO;
         _mSmallOptions = opt;
     }
     return _mSmallOptions;
 }
-
-/** 查询一张图 */
-//public func fGetSmallItemImage(for asset: PHAsset, targetSize: CGSize, resultHandler: @escaping (UIImage?, [AnyHashable : Any]?) -> Void) -> PHImageRequestID {
-//
-//    let options = mSmallOptions
-//    return _mPHCachingImageMgr.requestImage(for: asset, targetSize: targetSize, contentMode: PHImageContentMode.aspectFill, options: options, resultHandler: {(img: UIImage?, info: [AnyHashable : Any]?) -> Void in
-//
-//        resultHandler(img, info)
-//    })
-//}
 
 /** 查询一张图 */
 - (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler

@@ -25,10 +25,14 @@ Pod::Spec.new do |s|
   s.default_subspec     = 'Core'
 
   s.subspec 'Core' do |ss|
-    # ss.dependency       'CLSCommon/Core'
     ss.frameworks          = "Photos"
+    ss.dependency            'CLOCommon/Core'
     ss.source_files        = "Classes/Core/**/*.{h,m,mm,hpp,cpp,c}"
   end
-
+  s.subspec 'UI' do |ss|
+    ss.frameworks          = "UIKit"
+    ss.dependency            'CLOAlbum/Core'
+    ss.source_files        = "Classes/UI/**/*.{h,m,mm,hpp,cpp,c}"
+  end
 
 end
