@@ -22,3 +22,5 @@ FOUNDATION_EXPORT const unsigned char CLOAlbumUIVersionString[];
 #import <CLOAlbum/CLOAlbumViewCell.h>
 #import <CLOAlbum/CLOAlbumViewConfig.h>
 #import <CLOAlbum/CLOAlbumView+CLOCollectionView.h>
+
+#import <CLOAlbum/UIImagePickerController+CLOAlbumUI.h>
