@@ -33,8 +33,8 @@
     [self addSubview:self.mAlbumView];
     
     // 计算
-    self.mAlbumConfig.mMinimumLineSpacing = @(self.width * self.mAlbumConfig.mMinimumLineSpacingPercent);
-    NSInteger size_w = (self.width - (self.mAlbumConfig.mMinimumLineCount + 1) * [self.mAlbumConfig.mMinimumLineSpacing floatValue]) / self.mAlbumConfig.mMinimumLineCount;
+    self.mAlbumConfig.mMinimumLineSpacing = @(self.CLOWidth * self.mAlbumConfig.mMinimumLineSpacingPercent);
+    NSInteger size_w = (self.CLOWidth - (self.mAlbumConfig.mMinimumLineCount + 1) * [self.mAlbumConfig.mMinimumLineSpacing floatValue]) / self.mAlbumConfig.mMinimumLineCount;
     self.mAlbumConfig.mItemSize = CLOSizeMake(@(size_w), @(size_w));
 }
 
