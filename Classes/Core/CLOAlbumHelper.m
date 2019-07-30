@@ -91,10 +91,14 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 /** 查询一张图 */
 - (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler
 {
+    return [self fGetSmallItemImage:asset withTargetSize:targetSize withOptions:self.mSmallOptions withResultHandler:resultHandler];
+}
+- (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withOptions:(PHImageRequestOptions *)opt withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler
+{
     return [self.mPHCachingImageMgr requestImageForAsset:asset
                                               targetSize:targetSize
                                              contentMode:PHImageContentModeAspectFill
-                                                 options:self.mSmallOptions
+                                                 options:opt
                                            resultHandler:resultHandler];
 }
 

@@ -46,7 +46,10 @@ extern NSString *const kNotification_AllPhotosChanged;
  @param resultHandler block
  @return 查询唯一标示符
  */
-- (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler;
+- (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize
+                     withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler;
+- (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withOptions:(PHImageRequestOptions *)opt
+                     withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler;
 
 
 /**
