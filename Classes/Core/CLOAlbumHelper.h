@@ -8,8 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
 
-//#define kCLOAlbumMgr [CLOAlbumMgr sInstance]
-
 /**
  *  当mAllPhotos 有改变时通知
  */
@@ -46,10 +44,20 @@ extern NSString *const kNotification_AllPhotosChanged;
  @param resultHandler block
  @return 查询唯一标示符
  */
-- (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize
-                     withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler;
-- (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withOptions:(PHImageRequestOptions *)opt
-                     withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler;
+- (PHImageRequestID)CLOGotSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize
+                       withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler;
+
+/**
+ 查询一张照片
+ 
+ @param asset           相册对象
+ @param targetSize      查询大小
+ @param resultHandler   block
+ @param opt             参数
+ @return 查询唯一标示符
+ */
+- (PHImageRequestID)CLOGotSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withOptions:(nullable PHImageRequestOptions *)opt
+                       withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler;
 
 
 /**
@@ -57,7 +65,7 @@ extern NSString *const kNotification_AllPhotosChanged;
 
  @param requestID 查询唯一标示符
  */
-- (void)fCancelImageRequest:(PHImageRequestID)requestID;
+- (void)CLOCancelImageRequest:(PHImageRequestID)requestID;
 
 
 /**
@@ -66,7 +74,7 @@ extern NSString *const kNotification_AllPhotosChanged;
  @param asset 相册对象
  @param completionHandler block
  */
-- (void)fDeleteImage:(PHAsset *)asset withCompletionHandler:(void(^)(BOOL success, NSError * error))completionHandler;
+- (void)CLODeleteImage:(PHAsset *)asset withCompletionHandler:(void(^)(BOOL success, NSError * error))completionHandler;
 
 
 /**
@@ -77,7 +85,7 @@ extern NSString *const kNotification_AllPhotosChanged;
  @param completionHandler block
  @return 查询唯一标示符
  */
-- (PHImageRequestID)fGetOriginImage:(PHAsset *)asset withProgressHandler:(PHAssetImageProgressHandler)progress  withCompleteHandler:(void(^)(UIImage *img, NSDictionary *info))completionHandler;
+- (PHImageRequestID)CLOGotOriginImage:(PHAsset *)asset withProgressHandler:(PHAssetImageProgressHandler)progress  withCompleteHandler:(void(^)(UIImage *img, NSDictionary *info))completionHandler;
 
 
 /**
@@ -87,7 +95,7 @@ extern NSString *const kNotification_AllPhotosChanged;
  @param resultHandler block
  @return 查询唯一标示符
  */
-- (PHImageRequestID)fGetOriginImageData:(PHAsset *)asset withResultHandler:(void(^)(NSData *imageData, NSDictionary * info))resultHandler;
+- (PHImageRequestID)CLOGotOriginImageData:(PHAsset *)asset withResultHandler:(void(^)(NSData *imageData, NSDictionary * info))resultHandler;
 
 
 /**
@@ -95,7 +103,7 @@ extern NSString *const kNotification_AllPhotosChanged;
 
  @return 相册
  */
-- (PHFetchResult<PHAssetCollection *> *)fGetAllCollections;
+- (PHFetchResult<PHAssetCollection *> *)CLOGotAllCollections;
 
 
 /**
@@ -103,13 +111,13 @@ extern NSString *const kNotification_AllPhotosChanged;
 
  @return 相册
  */
-- (NSArray<PHAssetCollection *> *)fGetSystemsAndUserCollections;
+- (NSArray<PHAssetCollection *> *)CLOGotSystemsAndUserCollections;
 
 
 /**
  获取用户Camera Roll 相册
  */
-- (PHAssetCollection *)fGetCameraRollCollection;
+- (PHAssetCollection *)CLOGotCameraRollCollection;
 
 
 /**
@@ -118,14 +126,21 @@ extern NSString *const kNotification_AllPhotosChanged;
  @param limit       最大个数，如果=0表示全部查出
  @return 图片
  */
-- (PHFetchResult<PHAsset *> *)fGetPHAssetsFromCollection:(PHAssetCollection *)collection fetchLimit:(NSUInteger)limit;
+- (PHFetchResult<PHAsset *> *)CLOGotPHAssetsFromCollection:(PHAssetCollection *)collection fetchLimit:(NSUInteger)limit;
 
+/**
+ 获取当前相册第一张图片
+ @param identifiers     相册
+ @param opt             参数
+ @return                获取到的PHAsset对象
+ */
+- (PHFetchResult<PHAsset *> *)CLOFetchAssetsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions *)opt;
 
 /**
  获取权限
 
  @param block status == authorized 表示可以访问相册
  */
-- (void)fGetAuthorizationStatus:(void(^)(PHAuthorizationStatus status))block;
+- (void)CLOGetAuthorizationStatus:(void(^)(PHAuthorizationStatus status))block;
 
 @end

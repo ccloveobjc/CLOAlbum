@@ -89,11 +89,11 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 }
 
 /** 查询一张图 */
-- (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler
+- (PHImageRequestID)CLOGotSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler
 {
-    return [self fGetSmallItemImage:asset withTargetSize:targetSize withOptions:self.mSmallOptions withResultHandler:resultHandler];
+    return [self CLOGotSmallItemImage:asset withTargetSize:targetSize withOptions:self.mSmallOptions withResultHandler:resultHandler];
 }
-- (PHImageRequestID)fGetSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withOptions:(PHImageRequestOptions *)opt withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler
+- (PHImageRequestID)CLOGotSmallItemImage:(PHAsset *)asset withTargetSize:(CGSize)targetSize withOptions:(PHImageRequestOptions *)opt withResultHandler:(void (^)(UIImage * result, NSDictionary * info))resultHandler
 {
     return [self.mPHCachingImageMgr requestImageForAsset:asset
                                               targetSize:targetSize
@@ -103,13 +103,13 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 }
 
 /** 取消查询 */
-- (void)fCancelImageRequest:(PHImageRequestID)requestID
+- (void)CLOCancelImageRequest:(PHImageRequestID)requestID
 {
     [self.mPHCachingImageMgr cancelImageRequest:requestID];
 }
 
 /** 删除一张图 */
-- (void)fDeleteImage:(PHAsset *)asset withCompletionHandler:(void(^)(BOOL success, NSError * error))completionHandler
+- (void)CLODeleteImage:(PHAsset *)asset withCompletionHandler:(void(^)(BOOL success, NSError * error))completionHandler
 {
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
         
@@ -120,7 +120,7 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 
 
 /** 获取原始图片 */
-- (PHImageRequestID)fGetOriginImage:(PHAsset *)asset withProgressHandler:(PHAssetImageProgressHandler)progress  withCompleteHandler:(void(^)(UIImage *img, NSDictionary *info))completionHandler
+- (PHImageRequestID)CLOGotOriginImage:(PHAsset *)asset withProgressHandler:(PHAssetImageProgressHandler)progress  withCompleteHandler:(void(^)(UIImage *img, NSDictionary *info))completionHandler
 {
     
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
@@ -139,7 +139,7 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 }
 
 
-- (PHImageRequestID)fGetOriginImageData:(PHAsset *)asset withResultHandler:(void(^)(NSData *imageData, NSDictionary * info))resultHandler
+- (PHImageRequestID)CLOGotOriginImageData:(PHAsset *)asset withResultHandler:(void(^)(NSData *imageData, NSDictionary * info))resultHandler
 {
     PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
     options.networkAccessAllowed = YES;
@@ -155,19 +155,19 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 }
 
 /** 获取所有相册信息 */
-- (PHFetchResult<PHAssetCollection *> *)fGetAllCollections
+- (PHFetchResult<PHAssetCollection *> *)CLOGotAllCollections
 {
     
     PHFetchOptions *opt = [[PHFetchOptions alloc] init];
     return [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:opt];
 }
 
-- (NSArray<PHAssetCollection *> *)fGetSystemsAndUserCollections
+- (NSArray<PHAssetCollection *> *)CLOGotSystemsAndUserCollections
 {
     NSMutableArray *arrCollections = [NSMutableArray array];
     
     
-    PHFetchResult<PHAssetCollection *> *systemCollections = [self fGetAllCollections];
+    PHFetchResult<PHAssetCollection *> *systemCollections = [self CLOGotAllCollections];
     for (int i = 0; i < systemCollections.count; ++i) {
         
         PHAssetCollection *collection = systemCollections[i];
@@ -196,10 +196,10 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 }
 
 
-- (PHAssetCollection *)fGetCameraRollCollection
+- (PHAssetCollection *)CLOGotCameraRollCollection
 {
     PHAssetCollection *result = nil;
-    for (PHAssetCollection *pc in [self fGetAllCollections]) {
+    for (PHAssetCollection *pc in [self CLOGotAllCollections]) {
         
         if ([pc.localizedTitle isEqualToString:@"Camera Roll"]) {
             
@@ -213,7 +213,7 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 
 
 /** 获取当前相册第一张图片 */
-- (PHFetchResult<PHAsset *> *)fGetPHAssetsFromCollection:(PHAssetCollection *)collection fetchLimit:(NSUInteger)limit
+- (PHFetchResult<PHAsset *> *)CLOGotPHAssetsFromCollection:(PHAssetCollection *)collection fetchLimit:(NSUInteger)limit
 {
     PHFetchOptions *opt = [[PHFetchOptions alloc] init];
     opt.sortDescriptors = @[
@@ -225,6 +225,11 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
     PHFetchResult<PHAsset *> *asset = [PHAsset fetchAssetsInAssetCollection:collection options:opt];
     
     return asset;
+}
+
+- (PHFetchResult<PHAsset *> *)CLOFetchAssetsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions *)opt
+{
+    return [PHAsset fetchAssetsWithLocalIdentifiers:identifiers options:opt];
 }
 
 /// 获取当前相册，如果没有就创建一个
@@ -341,7 +346,7 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
 }
 
 /// 获取当前权限 - Parameter block: status == authorized 表示可以访问相册
-- (void)fGetAuthorizationStatus:(void(^)(PHAuthorizationStatus status))block
+- (void)CLOGetAuthorizationStatus:(void(^)(PHAuthorizationStatus status))block
 {
     [PHPhotoLibrary requestAuthorization:block];
 }

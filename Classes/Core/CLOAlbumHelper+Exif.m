@@ -13,7 +13,7 @@
 {
     if (imageInfoHander) {
     
-        [self fGetOriginImageData:asset withResultHandler:^(NSData *imageData, NSDictionary *exif) {
+        [self CLOGotOriginImageData:asset withResultHandler:^(NSData *imageData, NSDictionary *exif) {
             
             if (imageData == nil)
             {
