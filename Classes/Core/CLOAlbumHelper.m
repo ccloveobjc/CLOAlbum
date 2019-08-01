@@ -145,6 +145,11 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
     options.networkAccessAllowed = YES;
     options.synchronous = YES;
     
+    return [self.mPHCachingImageMgr CLOGotOriginImageData:asset withOptions:options withResultHandler:resultHandler];
+}
+
+- (PHImageRequestID)CLOGotOriginImageData:(PHAsset *)asset withOptions:(PHImageRequestOptions *)options withResultHandler:(void(^)(NSData *imageData, NSDictionary * info))resultHandler
+{
     return [self.mPHCachingImageMgr requestImageDataForAsset:asset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
         
         if (resultHandler) {

@@ -99,6 +99,17 @@ extern NSString *const kNotification_AllPhotosChanged;
 
 
 /**
+ 获取原始图片二进制文件
+ 
+ @param asset 相册对象
+ @param resultHandler block
+ @param options 参数
+ @return 查询唯一标示符
+ */
+- (PHImageRequestID)CLOGotOriginImageData:(PHAsset *)asset withOptions:(PHImageRequestOptions *)options withResultHandler:(void(^)(NSData *imageData, NSDictionary * info))resultHandler;
+
+
+/**
  获取所有相册信息
 
  @return 相册
