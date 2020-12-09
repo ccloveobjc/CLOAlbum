@@ -21,3 +21,5 @@ FOUNDATION_EXPORT const unsigned char CLOAlbumCoreVersionString[];
 #import <CLOAlbum/CLOAlbumHelper.h>
 
 #import <CLOAlbum/CLOAlbumHelper+Exif.h>
+
+#import <CLOAlbum/PHAsset+CLOExif.h>
