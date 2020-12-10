@@ -16,8 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)CLOGetMetadata:(BOOL)synchronous
               allowNet:(BOOL)allowNet
-       progressHandler:(PHAssetImageProgressHandler)progressHandler
-              callback:(void(^)(NSData *imageData, NSDictionary *metadata))completionBlock;
+       progressHandler:(nullable PHAssetImageProgressHandler)progressHandler
+              callback:(nullable void(^)(NSData *imageData, NSDictionary *metadata))completionBlock;
 
 /**
  获取一个最佳size
