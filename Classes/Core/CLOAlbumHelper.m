@@ -6,6 +6,7 @@
 //
 
 #import "CLOAlbumHelper.h"
+#import <CLOCommon/CLOCommonCore.h>
 
 NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChanged";
 //NSString *const kNotification_AllSectionsChanged = @"kNotification_AllSectionsChanged";
@@ -338,11 +339,11 @@ NSString *const kNotification_AllPhotosChanged = @"kNotification_AllPhotosChange
         } completionHandler:^(BOOL success1, NSError * _Nullable error1) {
             if (success1 == NO) {
                 
-                NSLog(@"图片保存失败 error  = %@", error1);
+                SDKLog(@"图片保存失败 error  = %@", error1);
             }
             else {
                 
-                NSLog(@"图片保存成功");
+                SDKLog(@"图片保存成功");
             }
             
             if (completion != nil) { completion(success1, error1); }
