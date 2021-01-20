@@ -31,11 +31,16 @@
                 if (imageSourceRef) {
                     
                     CFDictionaryRef cfMetadata = CGImageSourceCopyPropertiesAtIndex(imageSourceRef, 0, nil);
-                    NSDictionary *metaDataDic = [NSDictionary dictionaryWithDictionary:(__bridge NSDictionary *)(cfMetadata)];
-                    
-                    completionBlock(imageData, metaDataDic);
-                    
-                    CFRelease(cfMetadata);
+                    if (cfMetadata)
+                    {
+                        NSDictionary *metaDataDic = [NSDictionary dictionaryWithDictionary:(__bridge NSDictionary *)(cfMetadata)];
+                        completionBlock(imageData, metaDataDic);
+                        CFRelease(cfMetadata);
+                    }
+                    else
+                    {
+                        completionBlock(imageData, nil);
+                    }
                     CFRelease(imageSourceRef);
                 }
             } else {
