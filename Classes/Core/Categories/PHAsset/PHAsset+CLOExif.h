@@ -12,6 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PHAsset (CLOExif)
 
 /**
+ 获取照片的UIImage
+ */
+- (void)CLOGetUIImage:(BOOL)synchronous
+             longSize:(NSInteger)analysePhotoSize
+             allowNet:(BOOL)allowNet
+      progressHandler:(PHAssetImageProgressHandler)progressHandler
+             callback:(void(^)(UIImage *image, NSDictionary *info))completionBlock;
+
+/**
  获取照片的exif信息
  */
 - (void)CLOGetMetadata:(BOOL)synchronous

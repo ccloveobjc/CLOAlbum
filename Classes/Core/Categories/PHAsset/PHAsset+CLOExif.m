@@ -9,6 +9,25 @@
 
 @implementation PHAsset (CLOExif)
 
+- (void)CLOGetUIImage:(BOOL)synchronous
+             longSize:(NSInteger)analysePhotoSize
+             allowNet:(BOOL)allowNet
+      progressHandler:(PHAssetImageProgressHandler)progressHandler
+             callback:(void(^)(UIImage *image, NSDictionary *info))completionBlock
+{
+    PHImageRequestOptions *options = [PHImageRequestOptions new];
+    options.networkAccessAllowed = allowNet;
+    options.synchronous = synchronous;
+    options.version = PHImageRequestOptionsVersionCurrent;
+    options.progressHandler = progressHandler;
+    PHImageManager *manager = [[PHImageManager alloc] init];
+    
+    [manager requestImageForAsset:self targetSize:CGSizeMake(analysePhotoSize, analysePhotoSize) contentMode:PHImageContentModeAspectFit options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+        if (completionBlock) {
+            completionBlock(result, info);
+        }
+    }];
+}
 - (void)CLOGetMetadata:(BOOL)synchronous
               allowNet:(BOOL)allowNet
        progressHandler:(PHAssetImageProgressHandler)progressHandler
@@ -19,35 +38,65 @@
         PHImageRequestOptions *options = [PHImageRequestOptions new];
         options.networkAccessAllowed = allowNet;
         options.synchronous = synchronous;
-        options.version = PHImageRequestOptionsVersionOriginal;
+        options.version = PHImageRequestOptionsVersionCurrent;
         options.progressHandler = progressHandler;
         PHImageManager *manager = [[PHImageManager alloc] init];
-
-        [manager requestImageDataForAsset:self options:options resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
-            
-            if (imageData) {
+        if (@available(iOS 13, *))
+        {
+            [manager requestImageDataAndOrientationForAsset:self options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, CGImagePropertyOrientation orientation, NSDictionary * _Nullable info) {
                 
-                CGImageSourceRef imageSourceRef = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
-                if (imageSourceRef) {
+                if (imageData) {
                     
-                    CFDictionaryRef cfMetadata = CGImageSourceCopyPropertiesAtIndex(imageSourceRef, 0, nil);
-                    if (cfMetadata)
-                    {
-                        NSDictionary *metaDataDic = [NSDictionary dictionaryWithDictionary:(__bridge NSDictionary *)(cfMetadata)];
-                        completionBlock(imageData, metaDataDic);
-                        CFRelease(cfMetadata);
+                    CGImageSourceRef imageSourceRef = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
+                    if (imageSourceRef) {
+                        
+                        CFDictionaryRef cfMetadata = CGImageSourceCopyPropertiesAtIndex(imageSourceRef, 0, nil);
+                        if (cfMetadata)
+                        {
+                            NSDictionary *metaDataDic = [NSDictionary dictionaryWithDictionary:(__bridge NSDictionary *)(cfMetadata)];
+                            completionBlock(imageData, metaDataDic);
+                            CFRelease(cfMetadata);
+                        }
+                        else
+                        {
+                            completionBlock(imageData, nil);
+                        }
+                        CFRelease(imageSourceRef);
                     }
-                    else
-                    {
-                        completionBlock(imageData, nil);
-                    }
-                    CFRelease(imageSourceRef);
+                } else {
+                    
+                    completionBlock(imageData, nil);
                 }
-            } else {
+            }];
+        }
+        else
+        {
+            [manager requestImageDataForAsset:self options:options resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info) {
                 
-                completionBlock(imageData, nil);
-            }
-        }];
+                if (imageData) {
+                    
+                    CGImageSourceRef imageSourceRef = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
+                    if (imageSourceRef) {
+                        
+                        CFDictionaryRef cfMetadata = CGImageSourceCopyPropertiesAtIndex(imageSourceRef, 0, nil);
+                        if (cfMetadata)
+                        {
+                            NSDictionary *metaDataDic = [NSDictionary dictionaryWithDictionary:(__bridge NSDictionary *)(cfMetadata)];
+                            completionBlock(imageData, metaDataDic);
+                            CFRelease(cfMetadata);
+                        }
+                        else
+                        {
+                            completionBlock(imageData, nil);
+                        }
+                        CFRelease(imageSourceRef);
+                    }
+                } else {
+                    
+                    completionBlock(imageData, nil);
+                }
+            }];
+        }
     }
 }
 
