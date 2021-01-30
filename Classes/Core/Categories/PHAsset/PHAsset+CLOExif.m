@@ -31,7 +31,7 @@
 - (void)CLOGetMetadata:(BOOL)synchronous
               allowNet:(BOOL)allowNet
        progressHandler:(PHAssetImageProgressHandler)progressHandler
-              callback:(void(^)(NSData *imageData, NSDictionary *metadata))completionBlock
+              callback:(void(^)(NSData *imageData, NSDictionary *metadata, NSDictionary *info))completionBlock
 {
     @autoreleasepool {
         
@@ -54,18 +54,18 @@
                         if (cfMetadata)
                         {
                             NSDictionary *metaDataDic = [NSDictionary dictionaryWithDictionary:(__bridge NSDictionary *)(cfMetadata)];
-                            completionBlock(imageData, metaDataDic);
+                            completionBlock(imageData, metaDataDic, info);
                             CFRelease(cfMetadata);
                         }
                         else
                         {
-                            completionBlock(imageData, nil);
+                            completionBlock(imageData, nil, info);
                         }
                         CFRelease(imageSourceRef);
                     }
                 } else {
                     
-                    completionBlock(imageData, nil);
+                    completionBlock(imageData, nil, info);
                 }
             }];
         }
@@ -82,18 +82,18 @@
                         if (cfMetadata)
                         {
                             NSDictionary *metaDataDic = [NSDictionary dictionaryWithDictionary:(__bridge NSDictionary *)(cfMetadata)];
-                            completionBlock(imageData, metaDataDic);
+                            completionBlock(imageData, metaDataDic, info);
                             CFRelease(cfMetadata);
                         }
                         else
                         {
-                            completionBlock(imageData, nil);
+                            completionBlock(imageData, nil, info);
                         }
                         CFRelease(imageSourceRef);
                     }
                 } else {
                     
-                    completionBlock(imageData, nil);
+                    completionBlock(imageData, nil, info);
                 }
             }];
         }
