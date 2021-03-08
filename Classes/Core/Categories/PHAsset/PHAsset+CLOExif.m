@@ -20,7 +20,7 @@
     options.synchronous = synchronous;
     options.version = PHImageRequestOptionsVersionCurrent;
     options.progressHandler = progressHandler;
-    PHImageManager *manager = [[PHImageManager alloc] init];
+    PHImageManager *manager = [PHImageManager defaultManager];
     
     [manager requestImageForAsset:self targetSize:CGSizeMake(analysePhotoSize, analysePhotoSize) contentMode:PHImageContentModeAspectFit options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if (completionBlock) {
@@ -40,7 +40,7 @@
         options.synchronous = synchronous;
         options.version = PHImageRequestOptionsVersionCurrent;
         options.progressHandler = progressHandler;
-        PHImageManager *manager = [[PHImageManager alloc] init];
+        PHImageManager *manager = [PHImageManager defaultManager];
         if (@available(iOS 13, *))
         {
             [manager requestImageDataAndOrientationForAsset:self options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, CGImagePropertyOrientation orientation, NSDictionary * _Nullable info) {
