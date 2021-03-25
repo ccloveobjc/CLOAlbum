@@ -28,6 +28,7 @@
         }
     }];
 }
+
 - (void)CLOGetMetadata:(BOOL)synchronous
               allowNet:(BOOL)allowNet
        progressHandler:(PHAssetImageProgressHandler)progressHandler
